@@ -47,7 +47,7 @@ namespace AIBox
 
         private void Off_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("你确定要关闭AI助手吗？", "你按下了关闭按钮", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("你确定要关闭AI助手吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.OK)
             {
@@ -113,8 +113,6 @@ namespace AIBox
             string userMessage = InputTextBox.Text;
             if (!string.IsNullOrEmpty(userMessage))
             {
-
-                // 模拟对方回复
                 string agentMessage = api.Get(userMessage);
 
                 /// 创建消息项，包含用户对话和对方回复
@@ -158,6 +156,46 @@ namespace AIBox
                 Send();
             }
         }
+
+        private void OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string file in files)
+                {
+                    string filePath = file;
+                    string fileContent = System.IO.File.ReadAllText(filePath);
+
+                    MessageBoxResult result = MessageBox.Show("确定要向AI发送[文件]"+filePath+"吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.OK)
+                    {
+                        string sendfile = @"" + filePath + "\n```\n" + fileContent + "\n```";
+                        Send();
+
+                        string userMessage = "\n[文件] "+filePath+"\n  ";
+                        string agentMessage = api.Get(sendfile);
+                        MessageItem messageItem = new MessageItem
+                        {
+                            UserMessage = userMessage,
+                            AgentMessage = agentMessage
+                        };
+
+                        // 添加消息项到对话集合
+                        conversation.Add(messageItem);
+
+                        // 滚动到最新的对话
+                        ConversationListBox.ScrollIntoView(conversation.LastOrDefault());
+
+                        // 修改焦点以便于继续输入
+                        InputTextBox.Focus();
+
+                    }
+                }
+            }
+        }
+
     }
 
 

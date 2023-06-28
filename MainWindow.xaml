@@ -6,7 +6,12 @@
         xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         xmlns:local="clr-namespace:AIBox"
         mc:Ignorable="d"
-        Title="AIBox" Height="600" Width="350" WindowStartupLocation="Manual" Loaded="Window_Loaded" ResizeMode="NoResize" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="AIBox" Height="600" Width="350" 
+        WindowStartupLocation="Manual" 
+        Loaded="Window_Loaded" 
+        ResizeMode="NoResize" 
+        PreviewKeyDown="Window_PreviewKeyDown"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <!-- 引用系统主题字典 -->
@@ -15,7 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid AllowDrop="True" Drop="OnDrop">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="101*"/>
             <ColumnDefinition Width="249*"/>

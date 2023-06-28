@@ -56,7 +56,7 @@ namespace AIBox.ChatApi
             catch (Exception ex)
             {
                 messages.RemoveAt(messages.Count - 1);
-                return "出现错误，请联系开发者" + ex;
+                return "出现错误，请联系开发者" + ex + "\nGithub链接：https://github.com/DanKE123abc/AIBox";
             }
         }
     }
