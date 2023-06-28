@@ -3,23 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
         xmlns:local="clr-namespace:AIBox"
         mc:Ignorable="d"
-        Title="AIBox" Height="600" Width="350" 
+        Title="AIBox" Height="350" Width="350" 
         WindowStartupLocation="Manual" 
         Loaded="Window_Loaded" 
         ResizeMode="NoResize" 
         PreviewKeyDown="Window_PreviewKeyDown"
+        Background="Lavender"
         >
+
     <Window.Resources>
-        <ResourceDictionary>
-            <!-- 引用系统主题字典 -->
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/PresentationFramework.Aero2;component/Themes/Aero2.NormalColor.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <Style x:Key="MyButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.55" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
+
     <Grid AllowDrop="True" Drop="OnDrop">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="101*"/>
@@ -33,25 +45,30 @@
 
 
         <!-- 最小化按钮 -->
-        <Button Grid.Row="0" Content=" X " Click="Off_Click" HorizontalAlignment="Left" Margin="220,5,0,5" Width="24" Grid.Column="1" />
-        <!-- 关闭按钮 -->
-        <Button Grid.Row="0" Content=" — " Click="MinimizeButton_Click" HorizontalAlignment="Left" Margin="185,5,0,5" Width="24" Grid.Column="1" />
-        <!-- 清除对话按钮-->
-        <Button Grid.Row="0" Content="清除对话" Click="RestartApplication_Click" HorizontalAlignment="Left" Margin="115,5,0,5" Grid.Column="1" />
+        <Button Style="{DynamicResource MyButton}" Background="Lavender" Grid.Row="0" Content=" — " Click="MinimizeButton_Click" HorizontalAlignment="Left" Margin="220,-1,0,11" Width="24" Grid.Column="1" FontWeight="Black" />
 
-        <!-- 标签 -->
-        <Label Grid.Row="0" Content="AI助手" HorizontalAlignment="Left" Margin="5,5,0,5"/>
 
         <!-- 聊天框 -->
-        <ListBox Grid.Row="1" Name="ConversationListBox" Margin="10,11,10,35" ScrollViewer.VerticalScrollBarVisibility="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2">
+        <ListBox Name="ConversationListBox" 
+                 Margin="10,15,10,29" 
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"  
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 Grid.ColumnSpan="2"
+                 Grid.RowSpan="2"
+                 Background="Lavender" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <!-- 用户对话 -->
-                        <TextBox Text="{Binding UserMessage}" Background="LightGray" Margin="5" Padding="5" IsReadOnly="True" TextWrapping="Wrap"/>
-
+                        <TextBox Text="{Binding UserMessage}" Background="Blue" Foreground="White" 
+                                 Margin="5" Padding="5" IsReadOnly="True" 
+                                 TextWrapping="Wrap" HorizontalAlignment="Right"
+                                 FontFamily="微软雅黑" FontSize="16"/>
                         <!-- 对方对话 -->
-                        <TextBox Text="{Binding AgentMessage}" Background="LightBlue" Margin="5" Padding="5" IsReadOnly="True" TextWrapping="Wrap"/>
+                        <TextBox Text="{Binding AgentMessage}" Background="White" Foreground="Black" 
+                                 Margin="5" Padding="5" IsReadOnly="True" 
+                                 TextWrapping="Wrap" HorizontalAlignment="Left"
+                                 FontFamily="微软雅黑" FontSize="16"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -65,11 +82,13 @@
             </Grid.ColumnDefinitions>
 
             <!-- 发送按钮 -->
-            <Button Grid.Column="0" Content="发送" Background="Blue" Foreground="White" Width="60" Margin="5" Click="SendButton_Click"/>
+            <Button Grid.Column="0" Content="发送" Background="Blue" Foreground="White" Width="60" Margin="10,5,0,5" Click="SendButton_Click" FontFamily="微软雅黑" FontSize="15" FontWeight="Black"/>
 
             <!-- 输入框 -->
             <TextBox x:Name="InputTextBox" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Margin="5,6,5,0" Height="Auto" 
-                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Background="Lavender" FontFamily="微软雅黑" FontSize="15"/>
         </Grid>
+
     </Grid>
+
 </Window>

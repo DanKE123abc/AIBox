@@ -32,35 +32,22 @@ namespace AIBox
 
         public MainWindow()
         {
+
             InitializeComponent();
             badgeCount = 0;
 
             // 初始化对话集合
             conversation = new ObservableCollection<MessageItem>();
             ConversationListBox.ItemsSource = conversation;
+            
         }
+
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized; // 最小化窗口
         }
 
-        private void Off_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("你确定要关闭AI助手吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.OK)
-            {
-                Application.Current.Shutdown();
-            }
-        }
-
-        private void RestartApplication_Click(object sender, RoutedEventArgs e)
-        {
-            api = null;
-            api = new ChatApi.ChatApi();
-            conversation.Clear();
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -113,27 +100,48 @@ namespace AIBox
             string userMessage = InputTextBox.Text;
             if (!string.IsNullOrEmpty(userMessage))
             {
-                string agentMessage = api.Get(userMessage);
-
-                /// 创建消息项，包含用户对话和对方回复
-                MessageItem messageItem = new MessageItem
+                if (userMessage == "清空对话" | userMessage == "clean")
                 {
-                    UserMessage = userMessage,
-                    AgentMessage = agentMessage
-                };
+                    api = null;
+                    api = new ChatApi.ChatApi();
+                    conversation.Clear();
+                    InputTextBox.Text = "";
+                }
+                else if (userMessage == "退出" | userMessage == "exit")
+                {
+                    MessageBoxResult result = MessageBox.Show("你确定要关闭AI助手吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                    InputTextBox.Text = "";
+                    if (result == MessageBoxResult.OK)
+                    {
+                        Application.Current.Shutdown();
+                    }
+                }
+                else
+                {
 
-                // 添加消息项到对话集合
-                conversation.Add(messageItem);
+
+                    string agentMessage = api.Get(userMessage);
+
+                    /// 创建消息项，包含用户对话和对方回复
+                    MessageItem messageItem = new MessageItem
+                    {
+                        UserMessage = userMessage,
+                        AgentMessage = agentMessage
+                    };
+
+                    // 添加消息项到对话集合
+                    conversation.Add(messageItem);
 
 
-                // 清空输入框
-                InputTextBox.Text = "";
+                    // 清空输入框
+                    InputTextBox.Text = "";
 
-                // 滚动到最新的对话
-                ConversationListBox.ScrollIntoView(conversation.LastOrDefault());
+                    // 滚动到最新的对话
+                    ConversationListBox.ScrollIntoView(conversation.LastOrDefault());
 
-                // 修改焦点以便于继续输入
-                InputTextBox.Focus();
+                    // 修改焦点以便于继续输入
+                    InputTextBox.Focus();
+                }
             }
         }
 
@@ -167,10 +175,10 @@ namespace AIBox
                     string filePath = file;
                     string fileContent = System.IO.File.ReadAllText(filePath);
 
-                    MessageBoxResult result = MessageBox.Show("确定要向AI发送[文件]"+filePath+"吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                    //MessageBoxResult result = MessageBox.Show("确定要向AI发送[文件]"+filePath+"吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
 
-                    if (result == MessageBoxResult.OK)
-                    {
+                    //if (result == MessageBoxResult.OK)
+                    //{
                         string sendfile = @"" + filePath + "\n```\n" + fileContent + "\n```";
                         Send();
 
@@ -191,7 +199,7 @@ namespace AIBox
                         // 修改焦点以便于继续输入
                         InputTextBox.Focus();
 
-                    }
+                    //}
                 }
             }
         }
