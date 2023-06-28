@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>AIBox</id>
+    <version>1.0.0</version>
+    <authors>AIBox</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework="net6.0-windows7.0" />
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+    </frameworkReferences>
+    <contentFiles>
+      <files include="any/net6.0-windows7.0/ICON.ico" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="D:\AIBox\bin\Release\net6.0-windows\AIBox.runtimeconfig.json" target="lib\net6.0-windows7.0\AIBox.runtimeconfig.json" />
+    <file src="D:\AIBox\bin\Release\net6.0-windows\AIBox.dll" target="lib\net6.0-windows7.0\AIBox.dll" />
+    <file src="D:\AIBox\ICON.ico" target="content\ICON.ico" />
+    <file src="D:\AIBox\ICON.ico" target="contentFiles\any\net6.0-windows7.0\ICON.ico" />
+  </files>
+</package>
