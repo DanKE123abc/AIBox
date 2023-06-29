@@ -10,6 +10,7 @@ using System.Windows.Interop;
 using AIBox.ChatApi;
 using System.Windows.Input;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AIBox
 {
@@ -98,7 +99,7 @@ namespace AIBox
         private void Send()
         {
             string userMessage = InputTextBox.Text;
-            if (!string.IsNullOrEmpty(userMessage))
+            if (!string.IsNullOrEmpty(userMessage) | !string.IsNullOrWhiteSpace(userMessage))
             {
                 if (userMessage == "清空对话" | userMessage == "clean")
                 {
@@ -107,14 +108,50 @@ namespace AIBox
                     conversation.Clear();
                     InputTextBox.Text = "";
                 }
-                else if (userMessage == "退出" | userMessage == "exit")
+                else if (userMessage == "退出" | userMessage == "exit" | userMessage == "quit")
                 {
-                    MessageBoxResult result = MessageBox.Show("你确定要关闭AI助手吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                    MessageBoxResult result = MessageBox.Show("你确定要关闭AI助手吗？", "AIBox", MessageBoxButton.OKCancel, MessageBoxImage.Question);
                     InputTextBox.Text = "";
                     if (result == MessageBoxResult.OK)
                     {
-                        Application.Current.Shutdown();
+                        System.Windows.Application.Current.Shutdown();
                     }
+                }
+                else if (userMessage == "帮助" | userMessage == "help")
+                {
+                    /// 创建消息项，包含用户对话和对方回复
+                    MessageItem messageItem = new MessageItem
+                    {
+                        UserMessage = userMessage,
+                        AgentMessage = @"[AIBox使用帮助]
+    使用方法：
+        1.对话：在下方输入框中输入想问的问题，点击发送按钮。
+        2.发送文件：将文件直接拖入窗口内即可（建议10KB以下的小文件）。
+
+    额定命令：
+        1.退出AIBox：退出 | exit | quit
+        2.清空聊天记录： 清空对话 | clean
+        3.展示这条消息： 帮助 | help
+
+    快捷键：
+        1.最小化：Ctrl + S
+        2.发送： Ctrl + Enter
+
+    若出现错误，可到Github链接：https://github.com/DanKE123abc/AIBox 反馈"
+                    };
+
+                    // 添加消息项到对话集合
+                    conversation.Add(messageItem);
+
+
+                    // 清空输入框
+                    InputTextBox.Text = "";
+
+                    // 滚动到最新的对话
+                    ConversationListBox.ScrollIntoView(conversation.LastOrDefault());
+
+                    // 修改焦点以便于继续输入
+                    InputTextBox.Focus();
                 }
                 else
                 {
@@ -175,7 +212,7 @@ namespace AIBox
                     string filePath = file;
                     string fileContent = System.IO.File.ReadAllText(filePath);
 
-                    //MessageBoxResult result = MessageBox.Show("确定要向AI发送[文件]"+filePath+"吗？", "AI助手", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                    //MessageBoxResult result = MessageBox.Show("确定要向AI发送[文件]"+filePath+"吗？", "AIBox", MessageBoxButton.OKCancel, MessageBoxImage.Question);
 
                     //if (result == MessageBoxResult.OK)
                     //{
