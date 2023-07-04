@@ -10,10 +10,10 @@ namespace AIBox.ChatApi
 {
     public class ChatApi
     {
-        //我服了这破接口又又又崩了！ private const string api = "https://fd.52ai.pw/v1/chat/completions";
-        private const string api = "https://service-d20dvkuc-1318437443.hk.apigw.tencentcs.com/v1/chat/completions";
+        private const string api = "https://fd.52ai.pw/v1/chat/completions";
+        //private const string api = "https://service-d20dvkuc-1318437443.hk.apigw.tencentcs.com/v1/chat/completions";
         private const string model = "gpt-3.5-turbo";
-        private const string api_key = "Bearer";
+        private const string api_key = "Bearer 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";
         List<Dictionary<string, string>> messages = new List<Dictionary<string, string>>
     {
         new Dictionary<string, string>() { { "role", "user" }, { "content", "" } }
